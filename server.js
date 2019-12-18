@@ -1,24 +1,33 @@
-const express = require('express')
-const bodyParser = require('body-parser')
+const express = require("express");
+const bodyParser = require("body-parser");
 
-const api = require('./api')
-const middleware = require('./middleware')
+const db = require("./config/database");
+const api = require("./api");
+const middleware = require("./middleware");
 
-const PORT = process.env.PORT || 1337
+db.connectDB();
 
-const app = express()
+const PORT = process.env.PORT || 1337;
 
-app.use(bodyParser.json())
+const app = express();
 
-app.get('/health', api.getHealth)
+app.use(bodyParser.json());
 
-app.use(middleware.handleError)
-app.use(middleware.notFound)
+app.get("/health", api.getHealth);
+
+app.get("/:studentId/*", api.getProperty);
+
+app.put("/:studentId/*", api.putProperty);
+
+app.delete("/:studentId/*", api.deleteProperty);
+
+app.use(middleware.handleError);
+app.use(middleware.notFound);
 
 const server = app.listen(PORT, () =>
   console.log(`Server listening on port ${PORT}`)
-)
+);
 
 if (require.main !== module) {
-  module.exports = server
+  module.exports = server;
 }
