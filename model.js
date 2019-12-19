@@ -77,7 +77,7 @@ module.exports = {
 			throw 'Some error occurs';
 		}
 
-		return saveStudent(studentId, data);
+		return await saveStudent(studentId, data);
 	}
 };
 
